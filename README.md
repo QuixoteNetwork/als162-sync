@@ -1,7 +1,5 @@
 # ALS162 Sync
 
-<img width="1254" height="1254" alt="logo" src="https://github.com/user-attachments/assets/35e54a35-21b7-4c3a-a6c1-085bb470a508" />
-
 **ALS162 Sync** is an experimental tool designed to **decode the ALS162 radio time signal** and use it to **synchronize your computer’s clock**.
 
 The program listens to an audio input, analyzes the signal received from ALS162, detects valid time frames, and extracts date and time information transmitted over radio. Once successfully decoded, it can compare this time with the system clock and help keep your PC synchronized without relying on an internet connection.
