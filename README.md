@@ -28,6 +28,32 @@ If you like this work:
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/M4M81CV1EX)
 
 ---
+## 📡 Preliminary Setup
+
+Before running the decoder, you must first tune and verify the ALS162 radio signal correctly.
+
+### 1️⃣ Tune the Receiver
+
+Configure your SDR or radio receiver with the following settings:
+
+- **Mode:** USB
+- **Signal Frequency:** `162 kHz`
+- **Center Frequency:** `161.500 kHz`
+- **Recommended Bandwidth:** `500 Hz – 1000 Hz`
+
+These settings help isolate the ALS162 signal and improve decoding reliability.
+
+### 2️⃣ Verify Signal Reception
+
+Before launching the program, make sure the signal is actually being received.
+
+The **minimum verification test** is simply listening to the audio output:
+
+- You should be able to clearly recognize the characteristic ALS162 modulation by ear.
+- If the signal cannot be identified audibly, the decoder will most likely fail to synchronize properly.
+- Good reception quality is extremely important for reliable decoding and time synchronization.
+
+---
 
 ## 📟 Interfaces
 
