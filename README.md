@@ -68,8 +68,7 @@ ALS162 Sync is available in two versions:
 
 # GUI (Graphical User Interface)
 
-<img width="332" height="445" alt="gui" src="https://github.com/user-attachments/assets/a5afe94f-96e0-42b6-b80b-ae85c30ec453" />
-
+<img width="333" height="445" alt="GUI" src="https://github.com/user-attachments/assets/51b6a06b-b769-4bc9-9b66-5e73495e6ef5" />
 
 ## Option 1 (for Windows):
 - Go to Releases section and Download the lastest version: https://github.com/QuixoteNetwork/als162-sync/releases
