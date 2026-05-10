@@ -1,6 +1,7 @@
 <img width="300" height="300" alt="logo-small" src="https://github.com/user-attachments/assets/a12d84f1-e7d6-4aa0-99ee-51d3c2491fc3" />
 
 # ALS162 Sync
+![License](https://img.shields.io/badge/license-MIT-green)  ![Python](https://img.shields.io/badge/python-3.9%2B-blue)  ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20MacOS-lightgrey)  ![Status](https://img.shields.io/badge/status-active-success)
 
 **ALS162 Sync** is an tool designed to **decode the ALS162 radio time signal** and use it to **synchronize your computer’s clock**.
 
