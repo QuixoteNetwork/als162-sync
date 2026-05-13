@@ -89,7 +89,7 @@ MONTHS = {
 }
 
 def fmt_date(dt, lang):
-    """Formatea fecha con dí\ia/mes en el idioma indicado."""
+    """Formatea fecha con día/mes en el idioma indicado."""
     day   = DAYS[lang][dt.weekday()]
     month = MONTHS[lang][dt.month - 1]
     return f'{day} {dt.day:02d} {month} {dt.year}'
@@ -617,9 +617,9 @@ class NmeaParser:
         s=self.state
         try: s.fix_type=int(f[2])
         except: pass
-        # Índices fijos: PDOP=15, HDOP=16, VDOP=17
+        # Indices fijos: PDOP=15, HDOP=16, VDOP=17
         # Funciona con GSA estándar (18 campos) y NMEA 4.10+ (19 campos con systemID al final)
-        # Evita el bug de índices negativos que cogen el systemID en lugar del VDOP
+        # Evita el bug de indices negativos que cogen el systemID en lugar del VDOP
         if len(f) >= 18:
             try: s.pdop = float(f[15]) if f[15] else None
             except: pass
@@ -855,7 +855,7 @@ def _resource_path(rel):
         base = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(base, rel)
 
-# Tiles bundleados (zoom 0-5) incluidos en la instalación/ejecutable
+# Tiles bundleados (zoom 0-5) incluidos en la instalacion/ejecutable
 BUNDLED_TILE_DIR = _resource_path(os.path.join('assets', 'tiles'))
 
 def _tile_xy(lat, lon, zoom):
@@ -1074,7 +1074,7 @@ class MapWidget(QWidget):
             for zo in range(-180, 181, 6):
                 x1,y1 = _ll2px(LAT_N, zo); x2,y2 = _ll2px(LAT_S, zo)
                 p.drawLine(x1,y1,x2,y2)
-            # Líneas de bandas (latitud)
+            # Lineas de bandas (latitud)
             for la in BAND_LATS:
                 x1,y1 = _ll2px(la,-180); x2,y2 = _ll2px(la,180)
                 p.drawLine(x1,y1,x2,y2)
@@ -1208,8 +1208,10 @@ class DecoderThread(QThread):
         except Exception as e:
             self.status_signal.emit(f'error:{e}'); return
         self._carrier=fc; self.carrier_signal.emit(fc); self.status_signal.emit('running')
-        proc=dec.ALS162Processor(dec.SAMPLE_RATE, fc,
-                                  lambda frame: self.frame_signal.emit(frame), verbose=False)
+        def _emit_frame(frame):
+            frame._emit_mono = time.monotonic()   # instante exacto de emisión
+            self.frame_signal.emit(frame)
+        proc=dec.ALS162Processor(dec.SAMPLE_RATE, fc, _emit_frame, verbose=False)
         rolling=_np.zeros(0,dtype=_np.float64); rolling_start=0; last_proc=0
         lock=threading.Lock()
 
@@ -1315,7 +1317,7 @@ class MainWindow(QMainWindow):
 
     def _center(self):
         s=QApplication.primaryScreen().availableGeometry()
-        # Tamaño por defecto: ocupa prácticamente toda la pantalla disponible
+        # Tamanyo por defecto: ocupa practicamente toda la pantalla disponible
         # pero deja un pequeño margen. El usuario puede reducirlo; el scroll
         # se activa cuando la ventana es más pequeña que el contenido.
         w = min(860, s.width()  - 40)
@@ -1334,7 +1336,7 @@ class MainWindow(QMainWindow):
         root_w=QWidget(); self.setCentralWidget(root_w)
         root=QVBoxLayout(root_w); root.setSpacing(0); root.setContentsMargins(6,4,6,4)
 
-        # Pestañas — idioma en la esquina de la barra de tabs
+        # Pestanyas — idioma en la esquina de la barra de tabs
         self.tabs=QTabWidget(); self.tabs.setDocumentMode(True)
         _tf=QFont(); _tf.setPointSize(QApplication.font().pointSize()+1)
         self.tabs.tabBar().setFont(_tf)
@@ -1589,7 +1591,7 @@ class MainWindow(QMainWindow):
         self.btn_zoom_in.setFont(QFont('Arial',12,QFont.Bold))
         self.btn_zoom_in.clicked.connect(self._map_zoom_in); ctrl.addWidget(self.btn_zoom_in)
         ctrl.addSpacing(8)
-        # Botón Online / Offline + etiqueta de estado
+        # Boton Online / Offline + etiqueta de estado
         self.lbl_map_mode_txt=QLabel(self.t('map_mode_online'))
         self.lbl_map_mode_txt.setStyleSheet('font-size:9pt;color:#555;')
         ctrl.addWidget(self.lbl_map_mode_txt)
@@ -1820,7 +1822,7 @@ class MainWindow(QMainWindow):
             self.lbl_gps_title.setText(self.t('clock_gps'))
         if self._last_snap is None or self._last_snap.utc_time is None:
             self.lbl_gps_time.setText('--:--:--'); self.lbl_gps_date.setText('---'); self.lbl_gps_tz.setText('GPS')
-        # Reloj PC en la pestaña ALS162
+        # Reloj PC en la pestanya ALS162
         if hasattr(self, 'als_lbl_pc_time'):
             self.als_lbl_pc_time.setText(now.strftime('%H:%M:%S'))
             self.als_lbl_pc_date.setText(fmt_date(now, self.lang))
@@ -1871,7 +1873,7 @@ class MainWindow(QMainWindow):
         """Cambia el idioma, lo persiste en QSettings y reconstruye las etiquetas."""
         self.lang=lang
         QSettings('QuixoteNetwork','ALS162GPSSync').setValue('language', lang)
-        # Sincronizar radio buttons en Settings (si ya están construidos)
+        # Sincronizar radio buttons en Settings (si ya estan construidos)
         if hasattr(self,'_radio_en'):
             self._radio_en.blockSignals(True); self._radio_es.blockSignals(True)
             (self._radio_en if lang=='en' else self._radio_es).setChecked(True)
@@ -1938,7 +1940,7 @@ class MainWindow(QMainWindow):
         is_online = self.btn_online_mode.isChecked()
         self.lbl_map_mode_txt.setText(self.t('map_mode_online') if is_online else self.t('map_mode_offline'))
         self.btn_online_mode.setToolTip(self.t('map_mode_tip'))
-        # Actualizar estado del mapa según situación actual
+        # Actualizar estado del mapa segun situacion actual
         cur_status = self.lbl_map_status.text()
         if not cur_status or cur_status in [
             'Sin fix GPS — el mapa se centrará automáticamente al obtener posición',
@@ -1984,7 +1986,7 @@ class MainWindow(QMainWindow):
                 self._last_snap.utc_time)
             local_gps = base + datetime.timedelta(hours=tz_h)
             self.lbl_gps_date.setText(fmt_date(local_gps, self.lang))
-        # ── Pestaña ALS162 ────────────────────────────────────────────────────
+        # ── Pestanya ALS162 ────────────────────────────────────────────────────
         if hasattr(self, 'als_lbl_dev'):
             self.als_lbl_dev.setText(self.t('als_device'))
             self.als_btn_refresh.setText(self.t('refresh'))
@@ -2070,7 +2072,7 @@ class MainWindow(QMainWindow):
 
         v.addWidget(self._sep())
 
-        # Descripción
+        # Descripcion
         self.about_lbl_desc=QLabel(self.t('about_desc'))
         self.about_lbl_desc.setWordWrap(True); self.about_lbl_desc.setAlignment(Qt.AlignCenter)
         fd=QFont(); fd.setPointSize(9); self.about_lbl_desc.setFont(fd)
@@ -2253,11 +2255,11 @@ class MainWindow(QMainWindow):
         stv.addLayout(rl)
         v.addWidget(stat_box); v.addWidget(self._sep())
 
-        # ── Sincronizacion horaria (GroupBox, mismo estilo que pestaña GPS) ───
+        # ── Sincronizacion horaria (GroupBox, mismo estilo que pestanya GPS) ───
         self.als_sync_box=QGroupBox(self.t('sync_title')); self.als_sync_box.setFont(fb)
         asv=QGridLayout(self.als_sync_box); asv.setHorizontalSpacing(6); asv.setVerticalSpacing(4)
         asv.setContentsMargins(8,6,8,8)
-        asv.setColumnStretch(3,1)   # col 3 vacía absorbe espacio extra → label+spin juntos
+        asv.setColumnStretch(3,1)   # col 3 vacia absorbe espacio extra → label+spin juntos
         self.als_lbl_tz_lbl=QLabel(self.t('als_tz_lbl'))
         self.als_lbl_tz_lbl.setStyleSheet('color:#555;')
         self.als_lbl_tz_lbl.setToolTip(self.t('als_tz_tip')); asv.addWidget(self.als_lbl_tz_lbl,0,0)
@@ -2411,16 +2413,24 @@ class MainWindow(QMainWindow):
         self._als_last_frame_ts=time.monotonic(); self._als_update_stats()
         self._als_last_frame=frame
 
-        # El frame ALS162 codifica el minuto siguiente (igual que DCF77):
-        # el callback dispara ~0.7-1 s ANTES del cambio de minuto real
-        # (durante el segundo 59). Calculamos los ms que faltan hasta el
-        # próximo límite de segundo y retrasamos TANTO la pantalla COMO la
-        # sincronización del SO, para que ambas sean precisas.
-        _frac = time.time() % 1.0
-        _delay_ms = int((1.0 - _frac) * 1000)
-        _delay_ms = max(50, min(1100, _delay_ms))
+        # Tiempo transcurrido desde que el decoder emitio el frame.
+        # Usamos time.monotonic() — independiente del reloj de pared (que puede
+        # estar equivocado). Esto nos da los segundos de latencia de audio+señal.
+        _emit_mono = getattr(frame, '_emit_mono', time.monotonic())
+        _elapsed_at_recv = time.monotonic() - _emit_mono   # s desde emisión
 
-        # Preparar datos del log (con la hora que mostrará el frame)
+        # El frame ALS162 codifica el minuto siguiente (igual que DCF77).
+        # Esperamos al próximo limite de segundo solo si estamos en el segundo 59;
+        # si ya cruzamos el minuto, aplicamos enseguida.
+        _now = _dt.datetime.now()
+        if _now.second == 59:
+            _frac = _now.microsecond / 1_000_000
+            _delay_ms = int((1.0 - _frac) * 1000)
+            _delay_ms = max(20, min(980, _delay_ms))
+        else:
+            _delay_ms = 20
+
+        # Preparar datos del log (con la hora que mostrara el frame)
         fr_dt=_dt.datetime(frame.year,frame.month,frame.day,frame.hour,frame.minute)
         utc_dt=fr_dt-_dt.timedelta(hours=frame.utc_offset())
         disp_dt=utc_dt+_dt.timedelta(hours=self._als_user_utc)
@@ -2430,13 +2440,21 @@ class MainWindow(QMainWindow):
         do_sync=self.als_chk_settime.isChecked()
         extra_h=self._als_user_utc-frame.utc_offset()
 
-        def _apply(f=frame, disp=disp_dt, tz_s=tz, fc=fc_tag, sync=do_sync, eh=extra_h, log_ts=ts):
+        def _apply(f=frame, disp=disp_dt, tz_s=tz, fc=fc_tag, sync=do_sync, eh=extra_h,
+                   log_ts=ts, mono0=_emit_mono):
             # ── Sincronizacion del SO ─────────────────────────────────────────
             synced=False
             if sync:
                 try:
                     _frame_local=datetime.datetime(f.year,f.month,f.day,f.hour,f.minute,0)
                     _user_local=_frame_local+datetime.timedelta(hours=eh)
+                    # Elapsed total desde que el decoder emitio el frame hasta ahora
+                    # (monotonic → no depende del reloj de pared, correcto incluso
+                    # si el PC lleva N segundos de retraso).
+                    _total_elapsed = time.monotonic() - mono0
+                    # Solo corregimos si el elapsed es razonable (< 30 s)
+                    if 0.0 < _total_elapsed < 30.0:
+                        _user_local += datetime.timedelta(seconds=_total_elapsed)
                     if not set_local_time(_user_local):
                         raise RuntimeError('set_local_time failed')
                     synced=True
@@ -2523,8 +2541,6 @@ if __name__ == '__main__':
     win = MainWindow()
     win.show()
 
-    # Cierra el splash nativo de PyInstaller (fase de extraccion del .exe)
-    # Solo existe cuando se ejecuta como .exe onefile; en desarrollo se ignora.
     try:
         import pyi_splash
         pyi_splash.close()
