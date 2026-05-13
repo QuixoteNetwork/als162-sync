@@ -46,7 +46,7 @@ except ImportError:
 # ── Traducciones ──────────────────────────────────────────────────────────────
 T = {
     'es': {
-        'title':         'ALS162 SYNC por Quixote Network v0.1',
+        'title':         'ALS162 SYNC por Quixote Network v0.2',
         'device':        'Dispositivo:',
         'refresh':       'Actualizar Lista',
         'start':         '▶  Iniciar',
@@ -107,7 +107,7 @@ T = {
                 "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
     },
     'en': {
-        'title':         'ALS162 SYNC by Quixote Network v0.1',
+        'title':         'ALS162 SYNC by Quixote Network v0.2',
         'device':        'Device:',
         'refresh':       'Update List',
         'start':         '▶  Start',
