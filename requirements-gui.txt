@@ -2,3 +2,4 @@ numpy
 scipy
 pyaudio
 pyqt5
+pyserial
