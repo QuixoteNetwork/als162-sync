@@ -80,11 +80,11 @@ ALS162 Sync is available in two versions:
   - **TUI (Terminal User Interface):**  
   Lightweight and terminal-based, ideal for low-resource systems, remote access (SSH), or headless setups.
 
-  - **GUI (Graphical User Interface): ALS162 GPS Sync (GPS & Maps included)**  
+  - **GUI (Graphical User Interface): ALS162 GPS Sync (GPS & Maps included) & ALS162 Sync**  
   User-friendly interface with visual elements, making it easier to monitor decoding status and interact with the application.
 ---
 
-# GUI (Graphical User Interface): ALS162 GPS Sync
+# GUI (Graphical User Interface): ALS162 GPS Sync or ALS162 GPS Sync
 
 <img width="333" height="445" alt="GUI" src="https://github.com/user-attachments/assets/51b6a06b-b769-4bc9-9b66-5e73495e6ef5" />
 
@@ -138,6 +138,18 @@ Install using `requirements-gui.txt`:
 
 ```bash
 pip install -r requirements-gui.txt
+```
+
+### 4. ▶️ Run App
+
+ALS162 GPS Sync (GPS & Maps included):
+```bash
+python3 als162_gps_sync.py
+```
+
+ALS162 Sync:
+```bash
+python3 als162_gui.py
 ```
 
 ---
