@@ -1,28 +1,45 @@
 <img width="300" height="300" alt="logo-small" src="https://github.com/user-attachments/assets/a12d84f1-e7d6-4aa0-99ee-51d3c2491fc3" />
 
-# ALS162 Sync
+# ALS162 GPS Sync
 ![License](https://img.shields.io/badge/license-MIT-green)  ![Python](https://img.shields.io/badge/python-3.9%2B-blue)  ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20MacOS-lightgrey)  ![Status](https://img.shields.io/badge/status-active-success)
 
-**ALS162 Sync** is an tool designed to **decode the ALS162 radio time signal** and use it to **synchronize your computer’s clock**.
+**ALS162 GPS Sync** is a tool designed to **synchronize your computer clock using radio and GPS time sources**, even completely offline.
+
+The application can decode the **ALS162 radio time signal** and also synchronize time using an external **GPS receiver connected via serial port (NMEA GPS, Galileo, GLONASS, Baidu, GNSS and QZSS)**. In addition, the integrated mapping system allows the use of both **offline and online maps** with live GPS positioning.
 
 ALS162 Time Signal: https://en.wikipedia.org/wiki/ALS162_time_signal
 
 The program listens to an audio input, analyzes the signal received from ALS162, detects valid time frames, and extracts date and time information transmitted over radio. Once successfully decoded, it can compare this time with the system clock and help keep your PC synchronized without relying on an internet connection.
 
+For GPS synchronization, **ALS162 GPS Sync** can read positioning and UTC time data directly from compatible serial GPS devices, providing an additional high-precision time reference source. The GPS module can also be used together with offline or online maps for navigation, monitoring, and portable field operation.
+
 ---
 ## ✨ Features
 
-- Decoding of the ALS162 time signal  (accuracy +-1 second)
-- Audio input from sound card, SDR receiver, or external radio  
-- Tone detection and bit-level analysis  
-- Automatic search for valid frames  
-- Extraction of date and time from the received signal  
-- System clock synchronization  
-- Designed for offline use, amateur radio, and lab environments  
+- Decoding of the ALS162 radio time signal (accuracy ± 200 ms)
+- GPS time synchronization through serial/NMEA GPS receivers
+- Offline and online map support with live GPS positioning
+- Audio input from sound card, SDR receiver, or external radio
+- Tone detection and bit-level analysis
+- Automatic search for valid ALS162 frames
+- Extraction of date and time from received radio signals
+- System clock synchronization
+- Compatible with portable and offline operation environments
+- Designed for amateur radio, lab, emergency, and field use
 
 ## 🎯 Purpose
 
-The goal of this project is to provide a simple way to synchronize a computer using a radio-based time reference, especially useful in offline scenarios or for experimentation with low-frequency time signals.
+The goal of this project is to provide a simple and fully independent way to synchronize a computer using alternative time references such as low-frequency radio signals and GPS systems.
+
+ALS162 GPS Sync is especially useful in:
+- Offline environments
+- Amateur radio experimentation
+- Portable and field operations
+- Emergency communications
+- SDR and radio laboratories
+- GPS-based navigation and mapping systems
+
+By combining **ALS162 radio synchronization**, **GPS timing**, and **mapping capabilities**, the project offers a versatile toolkit for reliable timekeeping and positioning without depending on internet services.
 
 If you like this work:
 
@@ -63,11 +80,11 @@ ALS162 Sync is available in two versions:
   - **TUI (Terminal User Interface):**  
   Lightweight and terminal-based, ideal for low-resource systems, remote access (SSH), or headless setups.
 
-  - **GUI (Graphical User Interface):**  
+  - **GUI (Graphical User Interface): ALS162 GPS Sync (GPS & Maps included)**  
   User-friendly interface with visual elements, making it easier to monitor decoding status and interact with the application.
 ---
 
-# GUI (Graphical User Interface)
+# GUI (Graphical User Interface): ALS162 GPS Sync
 
 <img width="333" height="445" alt="GUI" src="https://github.com/user-attachments/assets/51b6a06b-b769-4bc9-9b66-5e73495e6ef5" />
 
