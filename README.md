@@ -84,7 +84,7 @@ ALS162 Sync is available in two versions:
   User-friendly interface with visual elements, making it easier to monitor decoding status and interact with the application.
 ---
 
-# GUI (Graphical User Interface): ALS162 GPS Sync or ALS162 GPS Sync
+# GUI (Graphical User Interface): ALS162 Sync or ALS162 GPS Sync
 
 <img width="333" height="445" alt="GUI" src="https://github.com/user-attachments/assets/51b6a06b-b769-4bc9-9b66-5e73495e6ef5" />
 
@@ -134,22 +134,20 @@ source venv/bin/activate
 
 ### 3. 📥 Install dependencies
 
-Install using `requirements-gui.txt`:
-
 ```bash
-pip install -r requirements-gui.txt
+pip install .[gui]
 ```
 
 ### 4. ▶️ Run App
 
 ALS162 GPS Sync (GPS & Maps included):
 ```bash
-python3 als162_gps_sync.py
+python3 ./als162_sync/als162_gps_sync.py
 ```
 
 ALS162 Sync:
 ```bash
-python3 als162_gui.py
+python3 ./als162_sync/als162_gui.py
 ```
 
 ---
@@ -206,19 +204,19 @@ source venv/bin/activate
 Install using `requirements.txt`:
 
 ```bash
-pip install -r requirements.txt
+pip install .
 ```
 
 
 ## 🚀 Sum Up Usage
 
 ```bash
-python als162_decoder.py --list
-python als162_decoder.py --device 2 --verbose
-python als162_decoder.py --device 2 --set-time
-python als162_decoder.py --device 2 --record 180 capture.wav   # record 3 minutes
-python als162_decoder.py --play capture.wav --verbose          # decode from WAV
-python als162_decoder.py --simulate                           # synthetic self-test
+python3 ./als162_sync/als162_decoder.py --list
+python3 ./als162_sync/als162_decoder.py --device 2 --verbose
+python3 ./als162_sync/als162_decoder.py --device 2 --set-time
+python3 ./als162_sync/als162_decoder.py --device 2 --record 180 capture.wav   # record 3 minutes
+python3 ./als162_sync/als162_decoder.py --play capture.wav --verbose          # decode from WAV
+python3 ./als162_sync/als162_decoder.py --simulate                           # synthetic self-test
 ```
 ---
 ## All Commands
@@ -226,19 +224,19 @@ python als162_decoder.py --simulate                           # synthetic self-t
 ### 🎙️ List audio devices
 
 ```bash
-python als162-decoder.py --list
+python3 ./als162_sync/als162-decoder.py --list
 ```
 
 ## 🚀 Run the TUI decoder
 
 ```bash
-python als162-decoder.py --device 2 --verbose
+python3 ./als162_sync/als162-decoder.py --device 2 --verbose
 ```
 
 ## 🕒 Decode and set system time
 
 ```bash
-python als162-decoder.py --device 2 --set-time
+python3 ./als162_sync/als162-decoder.py --device 2 --set-time
 ```
 
 > Note: This **require** administrator/root privileges.
@@ -246,7 +244,7 @@ python als162-decoder.py --device 2 --set-time
 Linux / macOS:
 
 ```bash
-sudo python3 als162-decoder.py --device 2 --set-time
+sudo python3 ./als162_sync/als162-decoder.py --device 2 --set-time
 ```
 
 Windows: run terminal as Administrator.
@@ -255,20 +253,20 @@ Windows: run terminal as Administrator.
 ## 💾 Record audio (WAV)
 
 ```bash
-python als162-decoder.py --device 2 --record 180 capture.wav
+python3 ./als162_sync/als162-decoder.py --device 2 --record 180 capture.wav
 ```
 
 
 ## ▶️ Decode from WAV file
 
 ```bash
-python als162-decoder.py --play capture.wav --verbose
+python3 ./als162_sync/als162-decoder.py --play capture.wav --verbose
 ```
 
 ## 🧪 Synthetic self-test
 
 ```bash
-python als162-decoder.py --simulate
+python3 ./als162_sync/als162-decoder.py --simulate
 ```
 ---
 If you like this work:

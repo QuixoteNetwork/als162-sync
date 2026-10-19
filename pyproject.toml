@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "als162-sync"
+version = "1.0.0"
+description = "Decode the ALS162 radio time signal or GPS data and synchronize the system clock"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+dependencies = ["numpy", "scipy", "pyaudio"]
+
+[project.optional-dependencies]
+gui = ["PyQt5", "pyserial"]
+
+[project.scripts]
+als162_gps_sync = "als162_sync.als162_gps_sync:main"
+als162_gui = "als162_sync.als162_gui:main"
+als162_decoder = "als162_sync.als162_decoder:main"
+als162_download_tiles = "als162_sync.download_tiles:main"
+
+[tool.setuptools.packages.find]
+include = ["als162_sync*"]
