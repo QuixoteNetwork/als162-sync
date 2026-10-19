@@ -64,6 +64,9 @@ def _load_als_libs():
     except ImportError:
         HAS_PYAUDIO = False
     try:
+        _here = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+        if _here not in sys.path:
+            sys.path.insert(0, _here)
         import als162_decoder as _d
         dec = _d
         HAS_DECODER = True
