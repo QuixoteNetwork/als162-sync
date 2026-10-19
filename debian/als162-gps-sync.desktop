@@ -1,0 +1,18 @@
+[Desktop Entry]
+Type=Application
+Version=1.5
+Name=ALS162 GPS Sync
+Name[es]=ALS162 GPS Sync
+GenericName=Radio and GPS clock synchronization
+GenericName[es]=Sincronización horaria por radio y GPS
+Comment=Synchronize the system clock from the ALS162 radio time signal or a serial GPS receiver, with map view
+Comment[es]=Sincroniza el reloj del sistema con la señal horaria ALS162 o un receptor GPS serie, con mapa
+Exec=als162_gps_sync
+TryExec=als162_gps_sync
+Icon=als162-sync
+Terminal=false
+StartupNotify=true
+StartupWMClass=als162_gps_sync
+Categories=Utility;Geography;HamRadio;Audio;Qt;
+Keywords=ALS162;GPS;NMEA;time;clock;sync;radio;SDR;map;OSM;
+Keywords[es]=ALS162;GPS;NMEA;hora;reloj;sincronizar;radio;SDR;mapa;

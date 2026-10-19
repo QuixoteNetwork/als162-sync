@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+if [ "$1" = "configure" ]; then
+    getent group als162 >/dev/null || addgroup --system als162
+fi
+#DEBHELPER#

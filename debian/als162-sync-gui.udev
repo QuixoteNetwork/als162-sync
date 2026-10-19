@@ -1,0 +1,4 @@
+# USB-serial GPS receivers: give the active seat user access
+SUBSYSTEM=="tty", KERNEL=="ttyUSB[0-9]*|ttyACM[0-9]*", TAG+="uaccess"
+# Optionally restrict to known GPS chips instead of all adapters, e.g. u-blox:
+# SUBSYSTEM=="tty", ATTRS{idVendor}=="1546", TAG+="uaccess"

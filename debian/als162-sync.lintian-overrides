@@ -1,0 +1,14 @@
+# The .pkla file is the only mechanism polkit 0.105 (Ubuntu 22.04) supports
+# for vendor-supplied local authority rules; its canonical location is under
+# /var/lib/polkit-1/localauthority/10-vendor.d. The JavaScript rule in
+# /usr/share/polkit-1/rules.d covers polkit >= 0.106 (Ubuntu 24.04+).
+als162-sync: file-in-unusual-dir var/lib/polkit-1/localauthority/10-vendor.d/als162-sync.pkla
+
+# The dist-info metadata lists all four console_scripts entry points of the
+# single upstream Python project, but the three GUI wrappers are shipped in
+# als162-sync-gui. The entry_points.txt is informational only and has no
+# runtime effect on this package.
+als162-sync: python-package-missing-depends-on-python
+als162-sync: unknown-file-in-python-module-directory
+# Not a Debian upload; there is no ITP bug to close.
+als162-sync: initial-upload-closes-no-bugs

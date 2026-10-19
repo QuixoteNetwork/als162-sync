@@ -1,0 +1,5 @@
+#!/usr/bin/make -f
+export PYBUILD_NAME = als162_sync
+export PYBUILD_DESTDIR = debian/tmp
+%:
+	dh $@ --with python3 --buildsystem=pybuild

@@ -1,0 +1,8 @@
+polkit.addRule(function(action, subject) {
+    if ((action.id == "org.freedesktop.timedate1.set-time" ||
+         action.id == "org.freedesktop.timedate1.set-ntp") &&
+        (subject.active && subject.local ||
+	 subject.isInGroup("als162"))) {
+        return polkit.Result.YES;
+    }
+});

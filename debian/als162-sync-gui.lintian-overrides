@@ -1,0 +1,21 @@
+# The udev rule tags USB-serial GPS receivers with "uaccess" so that the
+# logged-in seat user can open the port without being in the dialout group.
+# Lintian flags udev rules that do not use a MODE/GROUP but this is the
+# intended logind-ACL mechanism.
+als162-sync-gui: udev-rule-missing-subsystem *
+als162-sync-gui: udev-rule-unreadable *
+
+# The icon is shipped once under hicolor/256x256/apps; no scalable SVG is
+# available upstream.
+als162-sync-gui: icon-size-and-directory-name-mismatch *
+
+# als162_download_tiles is a helper for the GUI with no man page; the
+# --help output is the documentation. Man pages are tracked upstream.
+als162-sync-gui: no-manual-page usr/bin/als162_download_tiles
+als162-sync-gui: no-manual-page usr/bin/als162_gui
+als162-sync-gui: no-manual-page usr/bin/als162_gps_sync
+als162-sync-gui: initial-upload-closes-no-bugs
+# The udev rule only adds the uaccess tag for generic USB serial adapters;
+# there is no hardware-specific modalias to advertise in AppStream metadata.
+als162-sync-gui: appstream-metadata-missing-modalias-provide *
+als162-sync-gui: no-manual-page *

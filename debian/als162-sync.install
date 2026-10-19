@@ -1,0 +1,7 @@
+usr/bin/als162_decoder
+usr/lib/python3*/dist-packages/als162_sync/__init__.py
+usr/lib/python3*/dist-packages/als162_sync/als162_decoder.py
+usr/lib/python3*/dist-packages/als162_sync/__pycache__
+usr/lib/python3*/dist-packages/als162_sync-*.dist-info
+debian/als162-sync.polkit.rules usr/share/polkit-1/rules.d
+debian/als162-sync.pkla var/lib/polkit-1/localauthority/10-vendor.d

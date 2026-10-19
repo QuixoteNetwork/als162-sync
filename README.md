@@ -91,7 +91,40 @@ ALS162 Sync is available in two versions:
 ## Option 1 (for Windows):
 - Go to Releases section and Download the lastest version: https://github.com/QuixoteNetwork/als162-sync/releases
 
-## Option 2 (Linux, MacOS and Windows):
+## Option 2 (Ubuntu):
+
+- Install the necessary tools to build the .deb package
+
+```bash
+$ sudo apt-get update
+$ sudo apt-get install -y --no-install-recommends \
+    build-essential \
+    debhelper \
+    dh-python \
+    devscripts \
+    fakeroot \
+    python3-all \
+    python3-setuptools \
+    pybuild-plugin-pyproject \
+    lintian
+```
+
+- Build and install the .deb package.
+
+```bash
+$ git clone https://github.com/QuixoteNetwork/ALS162-Sync.git
+$ cd ALS162-Sync
+$ ./packaging/build-deb.sh
+$ sudo apt install ../als162-sync*.deb
+```
+
+- If running the decoder in a headless machine or using SSH, add your user to the als162 system group.
+
+```bash
+$ sudo gpasswd -a $USER als162
+```
+
+## Option 3 (Linux, MacOS and Windows):
 
 ### 1. Clone the repository
 
