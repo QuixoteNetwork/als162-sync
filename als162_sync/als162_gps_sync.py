@@ -2527,7 +2527,7 @@ class MainWindow(QMainWindow):
         event.accept()
 
 
-if __name__ == '__main__':
+def main():
     app = QApplication(sys.argv)
     app.setApplicationName('ALS162 GPS Sync')
 
@@ -2548,3 +2548,6 @@ if __name__ == '__main__':
         pass
 
     sys.exit(app.exec_())
+
+if __name__ == '__main__':
+    main()
