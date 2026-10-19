@@ -1271,24 +1271,6 @@ class SignedSpinBox(QSpinBox):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# SYNC HORA DEL SO (SetLocalTime)
-# ─────────────────────────────────────────────────────────────────────────────
-def set_local_time(dt):
-    if sys.platform!='win32': return False
-    try:
-        class ST(ctypes.Structure):
-            _fields_=[('wYear',ctypes.c_ushort),('wMonth',ctypes.c_ushort),
-                      ('wDayOfWeek',ctypes.c_ushort),('wDay',ctypes.c_ushort),
-                      ('wHour',ctypes.c_ushort),('wMinute',ctypes.c_ushort),
-                      ('wSecond',ctypes.c_ushort),('wMilliseconds',ctypes.c_ushort)]
-        st=ST(); st.wYear=dt.year; st.wMonth=dt.month; st.wDayOfWeek=dt.weekday()
-        st.wDay=dt.day; st.wHour=dt.hour; st.wMinute=dt.minute
-        st.wSecond=dt.second; st.wMilliseconds=dt.microsecond//1000
-        return bool(ctypes.windll.kernel32.SetLocalTime(ctypes.byref(st)))
-    except: return False
-
-
-# ─────────────────────────────────────────────────────────────────────────────
 # VENTANA PRINCIPAL
 # ─────────────────────────────────────────────────────────────────────────────
 class MainWindow(QMainWindow):
@@ -1799,7 +1781,7 @@ class MainWindow(QMainWindow):
         elapsed=max(0.0, min(elapsed, 1.5))   # clampeado a rango razonable
         utc_dt=utc_dt+datetime.timedelta(seconds=elapsed)
         local_dt=utc_dt+datetime.timedelta(hours=self.spin_tz.value())
-        ok=set_local_time(local_dt)
+        ok=self._set_local_time(local_dt)
         if ok:
             self._synced_once=True; self._last_sync=datetime.datetime.now(); self._last_sync_mono=now_mono
             self.lbl_last_sync.setText(self._last_sync.strftime('%Y-%m-%d %H:%M:%S'))
@@ -2458,7 +2440,7 @@ class MainWindow(QMainWindow):
                     # Solo corregimos si el elapsed es razonable (< 30 s)
                     if 0.0 < _total_elapsed < 30.0:
                         _user_local += datetime.timedelta(seconds=_total_elapsed)
-                    if not set_local_time(_user_local):
+                    if not self._set_local_time(_user_local):
                         raise RuntimeError('set_local_time failed')
                     synced=True
                     self.statusBar().showMessage(self.t('als_set_time_ok'))
@@ -2498,6 +2480,57 @@ class MainWindow(QMainWindow):
         if getattr(frame,'dst_change',False): ann.append(self.t('als_dst'))
         if getattr(frame,'leap_second',False): ann.append(self.t('als_leap'))
         self.als_lbl_ann.setText('  '.join(ann))
+
+    # ─────────────────────────────────────────────────────────────────────────────
+    # SYNC HORA DEL SO (SetLocalTime)
+    # ─────────────────────────────────────────────────────────────────────────────
+    def _set_local_time_linux(self, dt_utc):
+        """Ajusta el reloj del sistema en sistemas Linux.
+
+        Utiliza la interfaz DBUS de systemd-timedated. El paquete incluye
+        las reglas de polkit necesarias para permitir esta llamada a usuarios
+        con una sesion local activa o usuarios remotos miembros del grup als162.
+        """
+        import dbus, time
+
+        try:
+            bus = dbus.SystemBus()
+            td = dbus.Interface(bus.get_object("org.freedesktop.timedate1",
+                                               "/org/freedesktop/timedate1"),
+                                "org.freedesktop.timedate1")
+
+            # systemd-timedated no permite cambiar el reloj si NTP está activo
+            if td.Get("org.freedesktop.timedate1", "NTP",
+                      dbus_interface="org.freedesktop.DBus.Properties"):
+                td.SetNTP(False, False)
+
+            epoch_us = round(dt_utc.timestamp() * 1_000_000)
+            td.SetTime(epoch_us, False, False)
+
+            return True
+        except Exception as exc:
+            self._log_sync(f'<span style="color:#2E7D32">ERROR {exc}</span>')
+            return False
+
+
+    def _set_local_time(self, dt):
+        if sys.platform == 'linux':
+            return self._set_local_time_linux(dt)
+        elif sys.platform == 'win32':
+            try:
+                class ST(ctypes.Structure):
+                    _fields_=[('wYear',ctypes.c_ushort),('wMonth',ctypes.c_ushort),
+                              ('wDayOfWeek',ctypes.c_ushort),('wDay',ctypes.c_ushort),
+                              ('wHour',ctypes.c_ushort),('wMinute',ctypes.c_ushort),
+                              ('wSecond',ctypes.c_ushort),('wMilliseconds',ctypes.c_ushort)]
+                st=ST(); st.wYear=dt.year; st.wMonth=dt.month; st.wDayOfWeek=dt.weekday()
+                st.wDay=dt.day; st.wHour=dt.hour; st.wMinute=dt.minute
+                st.wSecond=dt.second; st.wMilliseconds=dt.microsecond//1000
+                return bool(ctypes.windll.kernel32.SetLocalTime(ctypes.byref(st)))
+            except: return False
+        else:
+            return False
+
 
     # ── ALS162: estadisticas ──────────────────────────────────────────────────
     def _als_reset_stats(self):
