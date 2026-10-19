@@ -1,0 +1,121 @@
+name: Build Debian packages
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      ubuntu:
+        description: 'Ubuntu versions to build (JSON array)'
+        required: false
+        default: '["26.04"]'
+
+permissions:
+  contents: write   # upload assets to the release
+
+jobs:
+  deb:
+    name: Ubuntu ${{ matrix.ubuntu }}
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:${{ matrix.ubuntu }}
+    strategy:
+      fail-fast: false
+      matrix:
+        ubuntu: ${{ fromJSON(github.event.inputs.ubuntu || '["26.04"]') }}
+    env:
+      DEBIAN_FRONTEND: noninteractive
+      TZ: UTC
+
+    steps:
+      - name: Install base tooling
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends \
+            ca-certificates git build-essential devscripts equivs \
+            lintian desktop-file-utils
+
+      - uses: actions/checkout@v4
+
+      - name: Mark workspace as safe for git
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Install build dependencies from debian/control
+        run: |
+          mk-build-deps --install --remove \
+            --tool='apt-get -y --no-install-recommends' debian/control
+
+      - name: Validate desktop files
+        run: desktop-file-validate debian/*.desktop
+
+      - name: Build packages
+        run: dpkg-buildpackage -us -uc -b
+
+      - name: Collect artifacts
+        run: |
+          mkdir -p out
+          mv ../*.deb ../*.buildinfo ../*.changes out/
+          ls -l out/
+
+      - name: Lintian
+        run: lintian -EvIL +pedantic --fail-on error out/*.changes
+
+      - name: Smoke test TUI package (no Qt must be pulled in)
+        run: |
+          apt-get install -y ./out/als162-sync_*_all.deb
+          test -x /usr/bin/als162_decoder
+          als162_decoder --help
+          python3 -c "import als162_sync, sys; assert 'PyQt5' not in sys.modules"
+          if dpkg -s python3-pyqt5 >/dev/null 2>&1; then
+            echo "::error::als162-sync pulled in python3-pyqt5"; exit 1
+          fi
+          getent group als162
+          test -f /usr/share/polkit-1/rules.d/als162-sync.polkit.rules
+
+      - name: Smoke test GUI package
+        run: |
+          apt-get install -y ./out/als162-sync-gui_*_all.deb
+          test -x /usr/bin/als162_gui
+          test -x /usr/bin/als162_gps_sync
+          test -x /usr/bin/als162_download_tiles
+          test -f /usr/share/applications/als162-gps-sync.desktop
+          test -f /usr/share/applications/als162-gui.desktop
+          test -f /usr/lib/udev/rules.d/60-als162-sync-gui.rules
+
+      - name: Test removal and purge
+        run: |
+          apt-get purge -y als162-sync-gui als162-sync
+          ! getent group als162
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: als162-sync-ubuntu-${{ matrix.ubuntu }}
+          path: out/*.deb
+          if-no-files-found: error
+
+  release:
+    name: Attach .deb files to the release
+    if: github.event_name == 'release'
+    needs: deb
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Rename per Ubuntu release
+        run: |
+          mkdir -p release
+          for dir in artifacts/als162-sync-ubuntu-*; do
+            rel=${dir##*-ubuntu-}
+            for f in "$dir"/*.deb; do
+              base=$(basename "$f" .deb)
+              cp "$f" "release/${base}_ubuntu${rel}.deb"
+            done
+          done
+          ls -l release/
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.release.tag_name }}
+          files: release/*.deb
