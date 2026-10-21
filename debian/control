@@ -1,0 +1,43 @@
+Source: als162-sync
+Section: utils
+Priority: optional
+Maintainer: QuixoteNetwork <noreply@github.com>
+Build-Depends: debhelper-compat (= 13),
+               dh-python,
+               python3-all,
+               python3-setuptools,
+               pybuild-plugin-pyproject
+Standards-Version: 4.6.2
+Homepage: https://github.com/QuixoteNetwork/als162-sync
+Rules-Requires-Root: no
+
+Package: als162-sync
+Architecture: all
+Depends: ${python3:Depends},
+         ${misc:Depends},
+         python3-numpy,
+         python3-scipy,
+         python3-pyaudio,
+	 python3-dbus
+Recommends: polkitd
+Suggests: als162-sync-gui
+Description: ALS162 radio time signal decoder (terminal interface)
+ Decodes the ALS162 low-frequency radio time signal from an audio
+ input and uses it to synchronize the system clock. This package
+ contains the terminal decoder (als162_decoder) and the shared
+ library code, with no graphical dependencies, suitable for
+ headless or remote (SSH) systems.
+
+Package: als162-sync-gui
+Architecture: all
+Depends: ${python3:Depends},
+         ${misc:Depends},
+         als162-sync (= ${source:Version}),
+         python3-pyqt5,
+         python3-serial
+Recommends: python3-pyqt5.qtwebengine
+Description: ALS162 radio and GPS clock synchronization (Qt GUI)
+ Graphical front-ends for ALS162 Sync: als162_gui (radio decoder)
+ and als162_gps_sync (radio decoder plus serial NMEA GPS receiver
+ with offline/online maps), and the als162_download_tiles helper
+ for fetching map tiles.

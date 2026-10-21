@@ -1,0 +1,18 @@
+[Desktop Entry]
+Type=Application
+Version=1.5
+Name=ALS162 Sync
+Name[es]=ALS162 Sync
+GenericName=Radio clock synchronization
+GenericName[es]=Sincronización horaria por radio
+Comment=Decode the ALS162 radio time signal from an audio input and synchronize the system clock
+Comment[es]=Decodifica la señal horaria ALS162 desde una entrada de audio y sincroniza el reloj del sistema
+Exec=als162_gui
+TryExec=als162_gui
+Icon=als162-sync
+Terminal=false
+StartupNotify=true
+StartupWMClass=als162_gui
+Categories=Utility;HamRadio;Audio;Qt;
+Keywords=ALS162;time;clock;sync;radio;SDR;audio;
+Keywords[es]=ALS162;hora;reloj;sincronizar;radio;SDR;audio;

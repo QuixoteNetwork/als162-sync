@@ -1,0 +1,6 @@
+[Allow als162 group to set the system time]
+Identity=unix-group:als162
+Action=org.freedesktop.timedate1.set-time;org.freedesktop.timedate1.set-ntp
+ResultAny=yes
+ResultInactive=yes
+ResultActive=yes

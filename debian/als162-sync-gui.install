@@ -1,0 +1,9 @@
+usr/bin/als162_gui
+usr/bin/als162_gps_sync
+usr/bin/als162_download_tiles
+usr/lib/python3*/dist-packages/als162_sync/als162_gui.py
+usr/lib/python3*/dist-packages/als162_sync/als162_gps_sync.py
+usr/lib/python3*/dist-packages/als162_sync/download_tiles.py
+debian/als162-gps-sync.desktop   usr/share/applications
+debian/als162-gui.desktop        usr/share/applications
+debian/als162-sync.png           usr/share/icons/hicolor/256x256/apps/

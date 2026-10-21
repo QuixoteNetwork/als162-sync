@@ -1,0 +1,6 @@
+als162-sync (1.1-1) UNRELEASED; urgency=medium
+
+  * Initial Debian packaging.
+  * For als162_gps_sync, implement setting the system clock in linux systems
+
+ -- QuixoteNetwork <noreply@github.com>  Thu, 16 Oct 2026 12:00:00 +0000

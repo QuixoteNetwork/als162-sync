@@ -1,0 +1,24 @@
+#!/bin/sh
+set -e
+
+# Remove the als162 system group on purge, but only if it is empty.
+# Users explicitly added to the group by the administrator would make
+# it non-empty; in that case leave it alone and let the admin decide.
+if [ "$1" = "purge" ]; then
+    if getent group als162 >/dev/null 2>&1; then
+        members=$(getent group als162 | cut -d: -f4)
+        if [ -z "$members" ]; then
+            if command -v delgroup >/dev/null 2>&1; then
+                delgroup --system als162 >/dev/null 2>&1 || true
+            else
+                groupdel als162 >/dev/null 2>&1 || true
+            fi
+        else
+            echo "als162-sync: group 'als162' still has members ($members); not removing it." >&2
+        fi
+    fi
+fi
+
+#DEBHELPER#
+
+exit 0
